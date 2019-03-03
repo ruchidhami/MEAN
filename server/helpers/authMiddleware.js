@@ -4,13 +4,20 @@ const CustomError = require('./customError');
 const CipherService = require('../src/services/cipher.service');
 const UserService = require('../src/services/user.service')
 
-const whiteListedUrl = ['/v1/login'];
+const whiteListedUrl = ['/v1/login', '/assets'];
 
 
 async function authorize(req, res, next) {
   const token = req.headers.authorization;
+  const url = req.url.split('/');
+  let whiteListUrl = '';
+  if (url[1] === 'assets') {
+    whiteListUrl = whiteListedUrl.indexOf('/assets') > -1
+  }else{
+    whiteListUrl = whiteListedUrl.indexOf(req.url) > -1
+  }
 
-  if (whiteListedUrl.indexOf(req.url) > -1) {
+  if (whiteListUrl) {
     next();
   }
   else if (!token) {

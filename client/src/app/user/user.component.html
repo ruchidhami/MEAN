@@ -1,3 +1,70 @@
-<p>
-  user works!
-</p>
+<div class="container" xmlns="http://www.w3.org/1999/html">
+<form  #userForm="ngForm">
+<h2 *ngIf="!userId && !action">Create User</h2>
+<h2 *ngIf="userId && action">Update User</h2>
+    <div class="form-group">
+        <label for="fullName">FullName*: </label>
+        <input type="text" name="fullname"  [(ngModel)]="user.fullName" #fullname="ngModel" required/>
+
+    <span *ngIf="fullname.errors && (fullname.dirty || fullname.touched || userForm.submitted )"
+                 class="field-error alert-danger">
+        Required Field!
+    </span>
+    </div>
+
+    <div class="form-group">
+      <label for="fullName">Gender*: </label>
+      <label for="active"> Male</label>
+         <input name="gender" type="radio"
+               [(ngModel)]="user.gender"
+               value="male"
+               [checked]="user.gender=='male'" #gender="ngModel" required/>
+               <label for="inactive"> Female </label>
+        <input name="gender" type="radio"
+               [(ngModel)]="user.gender"
+               value="female"
+               [checked]="user.gender=='female'" #gender="ngModel" required/>
+       <span *ngIf="gender.errors && (gender.dirty || gender.touched || userForm.submitted )"
+                        class="field-error alert-danger">
+               Required Field!
+           </span>
+      </div>
+    <div class="form-group">
+       Designation*:
+       <select [(ngModel)]="user.designation" name="designation" #designation="ngModel" required>
+         <option [value]="designation.value" *ngFor="let designation of designations"> {{designation.name}}</option>
+       </select>
+       <span *ngIf="designation.errors && (designation.dirty || designation.touched || userForm.submitted )"
+                 class="field-error alert-danger">
+        Required Field!
+        </span>
+     </div>
+
+    <div class="form-group">
+      Profile*: <input type="file"  name="profile" (change)="uploadImage($event)" required> <span *ngIf="userId && action"><img height="50px" width="50px" src="{{this.API_IMAGE_URl}}{{user.profile}}"></span>
+    </div>
+    <div class="form-group">
+          <label for="status">Status: </label>
+          <input name="status" type="checkbox" [(ngModel)]="user.status" />
+     </div>
+    <div class="form-group" >
+      <label for="status">Experience*: </label><button type="button" (click)="addMoreExperience()" class="btn btn-primary">+</button>
+      <div *ngFor="let experience of user.experience;let i=index">
+       <input type="text" name="experience{{i}}" [(ngModel)]="experience.name" #experience{{i}}="ngModel" required>
+       <button (click)="removeExperience(i)" class="btn btn-danger">-</button>
+
+        <span *ngIf="experience.errors && (experience.dirty || experience.touched || userForm.submitted )"
+            class="field-error alert-danger">
+          Required Field!
+          </span>
+        </div>
+   </div>
+
+    <div class="form-group" *ngIf="!userId && !action">
+        <button type="button" class="btn btn-secondary" (click)="createUser(userForm.valid)">Create</button>
+    </div>
+    <div class="form-group" *ngIf="userId && action">
+            <button  class="btn btn-primary" (click)="updateUser(userForm.valid)">Edit</button>
+     </div>
+</form>
+ </div>

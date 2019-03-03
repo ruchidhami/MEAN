@@ -1,31 +1,35 @@
 import { Injectable } from "@angular/core";
-import { Response } from "@angular/http";
+import { Http } from "@angular/http";
+import { Observable } from "rxjs/Rx";
 
-// import { Observable } from "rxjs/Rx";
-// import { ApiUrlConstant } from "../shared/constants/api-url.constant";
-// import { LoginPhone } from "./login-phone";
-// import { LoginUser } from "./login-user";
-// import { ValidatedUser } from "./validated-user";
-// import { ValidatedPhone } from "./validated-phone";
-// import { ApiHelperService } from "../shared/services/apihelper.service";
+import { environment } from "../../environments/environment";
+import { UtilitiesService } from "../services/utilities.service";
+
+import { ApiUrlConstant } from "../constants/api-url.constant";
+import { AppConstant } from "../constants/app.constant";
 
 @Injectable()
 export class LoginService {
 
-  constructor() {
+  constructor(private http: Http,
+              private utilitiesService: UtilitiesService) {
   }
 
-  // validateUserCredential(loginUser: LoginUser): Observable<ValidatedUser> {
-  //   return this.helper.post(`${ApiUrlConstant.USER_LOGIN}`, JSON.stringify(loginUser))
-  //     .map(response => {
-  //       return new ValidatedUser(response.json().data);
-  //     })
-  //     .catch(this.handleError);
-  // }
+  API_BASE_URL = environment['API_BASE_URL']
 
 
-  // private handleError(error: Response | any): Observable<any> {
-  //   return Observable.throw(error.json());
-  // }
+  validateUserCredential(loginUser) {
+    return this.http.post(`${this.API_BASE_URL}${ApiUrlConstant.USER_LOGIN}`, loginUser)
+      .map(response => {
+        let user = response.json().data;
+        this.utilitiesService.putCookie(`${AppConstant.AuthCookie}`, user.token)
+      })
+      .catch(this.handleError);
+  }
+
+
+  private handleError(error: Response | any): Observable<any> {
+    return Observable.throw(error.json());
+  }
 
 }

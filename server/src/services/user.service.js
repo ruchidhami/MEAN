@@ -33,7 +33,7 @@ function findOne(params) {
 
 function update(userId, params) {
   return new Promise((resolve, reject) => {
-    User.update({
+    User.updateOne({
       '_id': userId
     }, {
       '$set': params
@@ -47,38 +47,37 @@ function update(userId, params) {
   })
 }
 
-function search(params) {
+function search(attributes, keyWord) {
   return new Promise((resolve, reject) => {
-    return User.aggregate({
-      '$unwind': "$client"
-    }, {
-      '$unwind': "$owner"
-    }, {
-      "$match": {
-        $or: [{
-          'client.fullName': params.q
-        }, {
-          'client.contactNumber': params.q
-        }, {
-          'client.clientOrganization': params.q
-        }, {
-          'owner.fullName': params.q
-        }, {
-          'owner.contactNumber': params.q
-        }, {
-          'propertyType.typeOfProperty': params.q
-        }, {
-          'property.otherInfo.bankName': params.q
-        }]
+      const where = {
+        $and: [{
+          isAdmin: false
+        },
+          {
+            $or: []
+          }
+        ]
       }
-    })
-      .then(userListing => {
-        resolve(userListing);
+
+      let key = new RegExp("^" + keyWord.toLowerCase(), "i")
+
+      attributes.forEach(attribute => {
+        let likeQuery = {}
+        likeQuery[attribute] = {
+          $regex: key
+        }
+        where.$and[1].$or.push(likeQuery)
       })
-      .catch(err => {
-        reject(err);
-      })
-  })
+
+      return User.find(where)
+        .then(userListing => {
+          resolve(userListing);
+        })
+        .catch(err => {
+          reject(err);
+        })
+    }
+  )
 
 }
 

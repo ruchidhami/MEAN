@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-
+mongoose.Schema.Types.Boolean.convertToFalse.add('');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -21,6 +21,7 @@ const UserSchema = new Schema({
   },
   gender: {
     type: String,
+    required: true
   },
   designation: {
     type: String,
@@ -31,8 +32,9 @@ const UserSchema = new Schema({
     required: true
   },
   status: {
-    type: Boolean,
-    default: true
+    type: String,
+    required:true,
+    default: 'active'
   },
   isAdmin: {
     type: String,

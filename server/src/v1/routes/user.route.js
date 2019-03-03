@@ -20,8 +20,12 @@ const multer = Multer({
 
 router.post('/users', multer.single('profile'), UserController.createUser);
 
-router.patch('/users/:id', UserController.updateUser);
+router.patch('/users/:id', multer.single('profile'), UserController.updateUser);
 
 router.get('/users', UserController.fetchAll);
+
+router.get('/users/:id', UserController.fetchUser);
+
+router.get('/search', UserController.searchUser);
 
 module.exports = router;

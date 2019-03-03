@@ -1,9 +1,10 @@
 {
     "PORT": 3001,
-    "MONGODB_URI":"mongodb://127.0.0.1/TEST",
+    "MONGODB_URI":"mongodb://127.0.0.1/"YOUR_DATABASE",
     "FULL_NAME":"YOUR_FULL_NAME",
-    "USERNAME":"YOUR_USER_NAME",
+    "USER_NAME":"YOUR_USER_NAME",
     "EMAIL":"YOUR_EMAIL",
     "PASSWORD":"YOUR_PASSWORD",
-    "ADMIN":true
+    "ADMIN":true,
+    "CIPHER_SECRET":"somesecret"
 }

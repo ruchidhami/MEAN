@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 
 import { CookieService } from 'ngx-cookie';
+import { FlashMessagesService } from 'ngx-flash-messages';
 
 @Injectable()
 export class UtilitiesService {
 
-  constructor(private cookieService: CookieService) { }
+  constructor(private cookieService: CookieService,
+              private flashMessagesService: FlashMessagesService) { }
 
 
   clearAllCookie() {
@@ -20,5 +22,11 @@ export class UtilitiesService {
     return this.cookieService.put(key, value);
   }
 
+  showFlashMessage( message, classes, times) {
+    return this.flashMessagesService.show( message , {
+      classes: classes,
+      timeout: times,
+    });
+  }
 
 }

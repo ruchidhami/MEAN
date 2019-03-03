@@ -3,55 +3,53 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-
 /**
  * Third party modules
  */
-import {CookieModule} from "ngx-cookie";
+import { CookieModule } from "ngx-cookie";
+import { FlashMessagesModule } from 'ngx-flash-messages';
 
 /**
  * Services
  */
-
-import{ApiHelperService} from "./services/apihelper.service";
-import {AppCookieService} from "./services/cookie.service";
-import {UtilitiesService} from "./services/utilities.service";
+import { UtilitiesService } from "./services/utilities.service";
 
 /**
  * Routes
  */
-import { appRoutes } from './app-routing.module';
-
 /**
  * Routing Components
  */
-import { routingComponents } from './app-routing.module';
-
-
+import { appRoutes, routingComponents } from './app-routing.module';
 /**
  *  App Components
  */
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
+import { UserListingComponent } from './user/user-listing/user-listing.component';
+
+/**
+ * Services
+ */
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     UserComponent,
-    routingComponents
+    routingComponents,
+    UserListingComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes, { useHash: true }),
-    CookieModule.forRoot()
+    CookieModule.forRoot(),
+    FlashMessagesModule
   ],
   providers: [
-    AppCookieService,
-    ApiHelperService,
     UtilitiesService
   ],
   bootstrap: [AppComponent]
