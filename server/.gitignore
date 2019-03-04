@@ -1,4 +1,4 @@
-*.json
+config/*.json
 node_modules
 assets/images/*.jpg
 assets/images/*.png
